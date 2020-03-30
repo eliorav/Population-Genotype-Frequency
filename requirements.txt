@@ -1,0 +1,4 @@
+pandas
+pylint
+tqdm
+docker
