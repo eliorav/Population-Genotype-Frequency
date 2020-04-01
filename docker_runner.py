@@ -1,7 +1,8 @@
 import os
 from abc import ABC
 import docker
-from constants import IMAGE_SHARE_FOLDER_PATH, DATA_FOLDER, VCF_TOOLS_IMAGE_NAME
+
+from constants import IMAGE_SHARE_FOLDER_PATH, DATA_FOLDER, VCF_TOOLS_IMAGE_NAME, PLINK2_IMAGE_NAME, HG38DB_IMAGE_NAME
 
 
 class DockerRunner(ABC):
@@ -15,12 +16,13 @@ class DockerRunner(ABC):
             os.path.abspath(DATA_FOLDER): {'bind': IMAGE_SHARE_FOLDER_PATH, 'mode': 'rw'},
         }
 
-    def __call__(self, command, detach=False):
+    def __call__(self, command=None, environment=None, detach=False):
         self.client.containers.run(
             self.get_image_name(),
-            f"sh -c '{command}'",
+            command=f"sh -c '{command}'" if command is not None else None,
             remove=True,
             volumes=self.volumes,
+            environment=environment,
             detach=detach,
         )
 
@@ -37,3 +39,21 @@ class VCFToolsDockerRunner(DockerRunner):
 
     def get_image_name(self):
         return VCF_TOOLS_IMAGE_NAME
+
+
+class Plink2DockerRunner(DockerRunner):
+    """
+    Run Plink2 command
+    """
+
+    def get_image_name(self):
+        return PLINK2_IMAGE_NAME
+
+
+class Hg38dbDockerRunner(DockerRunner):
+    """
+    Run hg38db query
+    """
+
+    def get_image_name(self):
+        return HG38DB_IMAGE_NAME

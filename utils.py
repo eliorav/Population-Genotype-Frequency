@@ -6,6 +6,14 @@ from tqdm import tqdm
 from constants import FTP_PATH, BASE_PATH, DATA_FOLDER
 
 
+def get_filename_from_path(path):
+    """
+    :param path
+    :return: file name without type
+    """
+    return ".".join(path.split('/')[-1].split('.')[:-1])
+
+
 def mkdir_p(path):
     """
     create folder if not exist
@@ -19,6 +27,7 @@ class FTPDownloader:
     """
     Downloader class for displaying progress bar while downloading
     """
+
     def __call__(self, vcf_file=''):
         ftp = FTP(FTP_PATH)
         ftp.login()
