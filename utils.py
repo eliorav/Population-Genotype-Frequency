@@ -11,7 +11,7 @@ def get_filename_from_path(path):
     :param path
     :return: file name without type
     """
-    return ".".join(path.split('/')[-1].split('.')[:-1])
+    return ".".join(path.replace('\\', '/').split('/')[-1].split('.')[:-1])
 
 
 def mkdir_p(path):

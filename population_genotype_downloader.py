@@ -67,15 +67,9 @@ TOOD:
 1. download pgen, psam, pvar from http://www.cog-genomics.org/plink/2.0/resources#1kg_phase3 - boldfaced links
 2. -zst-decompress the pgen and the pvar files using plink2
 3. ./plink2 --pfile ./share_folder/all_phase3 vzs --extract ./share_folder/rsid_list.tsv --export vcf --out ./share_folder/all_phase3 - conver to vcf
-4. ./plink2 --vcf ./share_folder/all_phase3.vcf --freq --out ./share_folder/all_phase3.freq  - get freq data
-4. ./plink2 --vcf ./share_folder/ALL.chr1.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf --freq --out ./share_folder/ALL.chr1.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes  - get freq data
+4. ./plink2 --vcf ./share_folder/all_phase3.vcf --freq --out ./share_folder/all_phase3.freq  - get freq data - DONE
 5. cleanup
 
-
-grep CEU ./share_folder/integrated_call_samples_v3.20130502.ALL.panel | cut -f1 > ./share_folder/CEU.samples.list
-docker run --rm -it -v "//e/work/Population-Genotype-Frequency/.data://usr/src/app/share_folder" avelior/vcftools bash -c "vcf-subset -c ./share_folder/CEU.samples.list ./share_folder/ALL.chr1.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf"
-
-vcf-subset -c ./share_folder/CEU.samples.list ./share_folder/ALL.chr1.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf
 '''
 
 def download_merged_dataset_files():
