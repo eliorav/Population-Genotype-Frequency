@@ -6,7 +6,7 @@
 </p>
 
 ## Built with
-The script use the following platform to run:
+The script uses the following platform to run:
 * [Python 3.6 +](https://www.python.org/)
 * [Docker](https://www.docker.com/)
 Make sure that you have those before running the script.
@@ -38,13 +38,13 @@ grep CEU integrated_call_samples.20101123.ALL.panel | cut -f1 > CEU.samples.list
     vcf-subset -c [population sample list file] [merged VCF file] | fill-an-ac > [VCF by population output file]
     ```
 * step 5 - create frequency files.
-    * create frequency file for every population by using this command:
+    * create a frequency file for every population by using this command:
     ```sh
     plink2 --vcf [VCF by population file] --freq --out [frequency by population output file]
     ```
-    * merge the frequency files to a single one file and add the rsid and the position to the final file.
+    * merge the frequency files to a single one file and add the RSID and the position to the final file.
    
-note that step 1-3 can run in parallel.
+Note that steps 1-3 can run in parallel.
  
 ## Getting Started
 ### Prerequisites
@@ -58,7 +58,7 @@ you can run the script with `-h` flag to see the supporting arguments:
 ```sh
 python main.py -h
 ```
-will return the following:
+returns the following:
 ```sh
 usage: Create allele frequency by population file from 1000G data
        [-h] [--out_folder OUT_FOLDER] [--out_filename OUT_FILENAME]
@@ -67,30 +67,26 @@ usage: Create allele frequency by population file from 1000G data
 optional arguments:
   -h, --help            show this help message and exit
   --out_folder OUT_FOLDER
-                        the output folder of the result file. the default is
-                        "output"
+                        The output folder of the result file. The default is "output".
   --out_filename OUT_FILENAME
-                        the output file name of the result file (without
-                        suffix). the default is "allele_frequency"
+                        the output file name of the result file (without suffix). The default is "allele_frequency".
   --snps_file_path SNPS_FILE_PATH
-                        the path to the list of SNPs - the default is
-                        "snps.tsv"
+                        The path to the list of SNPs - The default is "snps.tsv".
   --no_parallel NO_PARALLEL
-                        if the value is true, the script will not run in
-                        parallel mode
+                        If the value is true, The script will not run in parallel mode.
 
 ```
 
-make sure to create a rsid list and pass the path to the script.
+Make sure to create an RSID list and pass the path to the script.
 
 ### Output
-The output file is a tsv file with the following header:
+The output file is a TSV file with the following header:
 * \#chrom - the chromosome number.
 * position - the position of the SNP.
-* rsid - the rsid number.
+* rsid - the RSID number.
 * A1 - the REF allele.
 * A2 - the ALT allele.
-* POOPULATION_NAME (e.g, ACB) - the frequency for the SNP in the given population.
+* POOPULATION_NAME (e.g., ACB) - the frequency for the SNP in the given population.
 The file is sorted by chromosome and position.
 
 ## Contact

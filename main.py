@@ -35,14 +35,14 @@ def main(args):
 
 
 if __name__ == "__main__":
-    PARSER = argparse.ArgumentParser("Create allele frequency by population file from 1000G data")
+    PARSER = argparse.ArgumentParser("Create allele frequency by population file from 1000G data.")
     PARSER.add_argument('--out_folder', type=str, default=DEFAULT_OUT_FOLDER,
-                        help=f'the output folder of the result file. the default is "output"')
+                        help=f'The output folder of the result file. The default is "output".')
     PARSER.add_argument('--out_filename', type=str, default=DEFAULT_OUT_FILE_NAME,
-                        help=f'the output file name of the result file (without suffix). '
-                             f'the default is "allele_frequency"')
+                        help=f'The output file name of the result file (without suffix). '
+                             f'The default is "allele_frequency".')
     PARSER.add_argument('--snps_file_path', type=str, default=DEFAULT_SNPS_LIST_PATH,
-                        help=f'the path to the list of SNPs - the default is "snps.tsv"')
+                        help=f'The path to the list of SNPs - The default is "snps.tsv".')
     PARSER.add_argument('--no_parallel', type=bool, default=False,
-                        help=f'if the value is true, the script will not run in parallel mode')
+                        help=f'If the value is true, the script will not run in parallel mode.')
     main(PARSER.parse_args())
