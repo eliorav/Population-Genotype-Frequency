@@ -1,5 +1,5 @@
 # FOLDERS
-DATA_FOLDER = '.data2'
+DATA_FOLDER = '.data'
 VCF_BY_POPULATION_FOLDER = 'vcf_by_population'
 FREQ_BY_POPULATION_FOLDER = 'freq_by_population'
 SNPS_DATA_FOLDER = 'SNPs_data'

@@ -43,7 +43,7 @@ grep CEU integrated_call_samples.20101123.ALL.panel | cut -f1 > CEU.samples.list
     plink2 --vcf [VCF by population file] --freq --out [frequency by population output file]
     ```
     * merge the frequency files to a single one file and add the RSID and the position to the final file.
-   
+* step 6 - cleanup the temp files.
 Note that steps 1-3 can run in parallel.
  
 ## Getting Started
