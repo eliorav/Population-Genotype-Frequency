@@ -1,9 +1,6 @@
 import os
-import sys
-from ftplib import FTP
+import requests
 from tqdm import tqdm
-
-from constants import FTP_PATH, BASE_PATH, DATA_FOLDER
 
 
 def get_filename_from_path(path):
@@ -23,29 +20,26 @@ def mkdir_p(path):
         os.makedirs(path)
 
 
-class FTPDownloader:
+def download_from_url(url, dst, desc=None):
     """
-    Downloader class for displaying progress bar while downloading
+    :param url: to download file
+    :param dst: place to put the file
+    :param desc: the description of the download for the progress bar
     """
-
-    def __call__(self, vcf_file=''):
-        ftp = FTP(FTP_PATH)
-        ftp.login()
-        file_name = vcf_file.split('/')[-1]
-        ftp.cwd(BASE_PATH)
-        with open(f'{DATA_FOLDER}/{file_name}', 'wb') as out_file:
-            total = ftp.size(file_name)
-            with tqdm(total=total,
-                      unit_scale=True,
-                      desc=f"{file_name}",
-                      miniters=1,
-                      file=sys.stdout,
-                      leave=True
-                      ) as pbar:
-                def call_back(data):
-                    file_length = len(data)
-                    pbar.update(file_length)
-                    out_file.write(data)
-
-                ftp.retrbinary('RETR {}'.format(file_name), call_back)
-        ftp.quit()
+    file_size = int(requests.head(url, allow_redirects=True).headers["Content-Length"])
+    if os.path.exists(dst):
+        first_byte = os.path.getsize(dst)
+    else:
+        first_byte = 0
+    if first_byte >= file_size:
+        return
+    if desc is None:
+        desc = url.split('/')[-1]
+    header = {"Range": "bytes=%s-%s" % (first_byte, file_size)}
+    with tqdm(total=file_size, initial=first_byte, unit='B', unit_scale=True, desc=desc) as pbar:
+        req = requests.get(url, headers=header, stream=True, allow_redirects=True)
+        with(open(dst, 'ab')) as out_file:
+            for chunk in req.iter_content(chunk_size=1024):
+                if chunk:
+                    out_file.write(chunk)
+                    pbar.update(1024)

@@ -6,13 +6,13 @@ from constants import SNPS_DATA_PATH, SNPS_DATA_FOLDER, SNPS_DATA_FILE_NAME
 from services.docker_runner import Hg38dbDockerRunner
 
 
-def fetch_snps_data():
+def fetch_snps_data(snps_file_path):
     """
     Fetch SNPs data from hg38 db
+    :param snps_file_path: the path of the SNPs list
     """
     print("retrieving SNPs data (chrom, position)")
-    os.makedirs(SNPS_DATA_PATH)
-    snps_df = pd.read_csv('./snps.tsv', sep="\t", names=['snp', 'allele'])
+    snps_df = pd.read_csv(snps_file_path, sep="\t", names=['snp', 'allele'])
     snps = snps_df['snp'].unique()
     step_size = 500
     steps = int(len(snps) / step_size) + 1
@@ -37,19 +37,21 @@ def merge_snps_data():
     """
     print("merge SNPs data to a single file")
     snps_files = glob(f"{SNPS_DATA_PATH}/*.csv")
-    df = pd.concat([pd.read_csv(snps_file) for snps_file in snps_files], ignore_index=True)
-    df = df[~df['chrom'].str.contains('alt')]
-    df.sort_values(by=['chrom', 'chromEnd'], inplace=True)
-    df.rename(columns={"chrom": "#chrom", "chromEnd": "position ", "name": "rsid"}, inplace=True)
-    df.to_csv(f'{SNPS_DATA_PATH}/{SNPS_DATA_FILE_NAME}', index=False)
+    snps_df = pd.concat([pd.read_csv(snps_file) for snps_file in snps_files], ignore_index=True)
+    snps_df = snps_df[~snps_df['chrom'].str.contains('alt')]
+    snps_df.sort_values(by=['chrom', 'chromEnd'], inplace=True)
+    snps_df.rename(columns={"chrom": "#chrom", "chromEnd": "position ", "name": "rsid"}, inplace=True)
+    snps_df.to_csv(f'{SNPS_DATA_PATH}/{SNPS_DATA_FILE_NAME}', index=False)
 
 
-def prepare_snps_data():
+def prepare_snps_data(args):
     """
     Prepare SNPs data
+    :param args: script args - should include snps_file_path - the path of the SNPs list
     """
     if not os.path.exists(SNPS_DATA_PATH):
-        fetch_snps_data()
+        os.makedirs(SNPS_DATA_PATH)
+        fetch_snps_data(args.snps_file_path)
         merge_snps_data()
     else:
         print(f"SNPs data: {SNPS_DATA_PATH} already exist")

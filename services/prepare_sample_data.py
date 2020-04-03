@@ -3,7 +3,7 @@ import pandas as pd
 from constants import SAMPLES_FOLDER
 
 
-def prepare_sample_data():
+def prepare_sample_data(args=None):
     """
     Extract samples data for each population to a file
     """
