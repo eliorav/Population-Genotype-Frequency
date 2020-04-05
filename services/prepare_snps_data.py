@@ -40,7 +40,7 @@ def merge_snps_data():
     snps_df = pd.concat([pd.read_csv(snps_file) for snps_file in snps_files], ignore_index=True)
     snps_df = snps_df[~snps_df['chrom'].str.contains('alt')]
     snps_df.sort_values(by=['chrom', 'chromEnd'], inplace=True)
-    snps_df.rename(columns={"chrom": "#chrom", "chromEnd": "position ", "name": "rsid"}, inplace=True)
+    snps_df.rename(columns={"chrom": "#chrom", "chromEnd": "position", "name": "rsid"}, inplace=True)
     snps_df.to_csv(f'{SNPS_DATA_PATH}/{SNPS_DATA_FILE_NAME}', index=False)
 
 

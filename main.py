@@ -21,10 +21,10 @@ def main(args):
 
     if not args.no_parallel:
         processes = [Process(target=step, kwargs={"args": args}) for step in parallel_steps]
-        [process.start() for process in processes]
-        [process.join() for process in processes]
+        for process in processes: process.start()
+        for process in processes: process.join()
     else:
-        [step(args) for step in parallel_steps]
+        for step in parallel_steps: step(args)
 
     prepare_subset_vcf_files_by_population()
     prepare_freq_data()
