@@ -36,12 +36,12 @@ def merge_snps_data():
     Merge the multiple files from hg38 db to a single file
     """
     print("merge SNPs data to a single file")
-    snps_files = glob(f"{SNPS_DATA_PATH}/*.csv")
+    snps_files = SNPS_DATA_PATH.glob('*.csv')
     snps_df = pd.concat([pd.read_csv(snps_file) for snps_file in snps_files], ignore_index=True)
     snps_df = snps_df[~snps_df['chrom'].str.contains('alt')]
     snps_df.sort_values(by=['chrom', 'chromEnd'], inplace=True)
     snps_df.rename(columns={"chrom": "#chrom", "chromEnd": "position", "name": "rsid"}, inplace=True)
-    snps_df.to_csv(f'{SNPS_DATA_PATH}/{SNPS_DATA_FILE_NAME}', index=False)
+    snps_df.to_csv(SNPS_DATA_PATH/SNPS_DATA_FILE_NAME, index=False)
 
 
 def prepare_snps_data(args):
@@ -49,8 +49,8 @@ def prepare_snps_data(args):
     Prepare SNPs data
     :param args: script args - should include snps_file_path - the path of the SNPs list
     """
-    if not os.path.exists(SNPS_DATA_PATH):
-        os.makedirs(SNPS_DATA_PATH)
+    if not SNPS_DATA_PATH.exists():
+        SNPS_DATA_PATH.mkdir(exist_ok=True, parents=True)
         fetch_snps_data(args.snps_file_path)
         merge_snps_data()
     else:

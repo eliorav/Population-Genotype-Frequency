@@ -13,7 +13,7 @@ class DockerRunner(ABC):
     def __init__(self):
         self.client = docker.from_env()
         self.volumes = {
-            os.path.abspath(DATA_FOLDER): {'bind': IMAGE_SHARE_FOLDER_PATH, 'mode': 'rw'},
+            str(DATA_FOLDER.absolute()): {'bind': str(IMAGE_SHARE_FOLDER_PATH), 'mode': 'rw'},
         }
 
     def __call__(self, command=None, environment=None, detach=False):
